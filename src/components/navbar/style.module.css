@@ -1,0 +1,16 @@
+.root {
+    border-radius: 8px;
+
+    &[data-active="true"] {
+        background-color: #e3e3e3;
+        transition: 200ms;
+
+        .label {
+            color: #000000;
+        }
+    }
+}
+
+.label {
+    color: #000000;
+}
