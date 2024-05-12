@@ -20,10 +20,7 @@ export const AppShellContext = createContext<TypeAppShellContext>({
     desktopOpened: false,
     toggleMobile: () => { },
     toggleDesktop: () => { },
-    links: [
-        ROUTER.DASHBOARD,
-        ROUTER.PRODUCT,
-    ],
+    links: [],
 })
 
 const AppshellLayout: React.FC = () => {
@@ -41,6 +38,9 @@ const AppshellLayout: React.FC = () => {
                 links: [
                     ROUTER.DASHBOARD,
                     ROUTER.PRODUCT,
+                    ROUTER.TYPE_PRODUCT,
+                    ROUTER.ORDER,
+                    ROUTER.WARE_HOUSE,
                 ],
             }}
         >

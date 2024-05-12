@@ -9,7 +9,10 @@ import {
     PageDashboard,
     PageLogin,
     PageNotFound,
+    PageOrder,
     PageProduct,
+    PageTypeProduct,
+    PageWarehouse,
 } from "./lazy";
 import { ROUTER } from "@/constants/router";
 
@@ -24,6 +27,9 @@ const AppRouter: React.FC = () => {
                         <Route path={"/"} element={<PageDashboard />} />
                         <Route path={ROUTER.DASHBOARD.href} element={<PageDashboard />} />
                         <Route path={ROUTER.PRODUCT.href} element={<PageProduct />} />
+                        <Route path={ROUTER.TYPE_PRODUCT.href} element={<PageTypeProduct />} />
+                        <Route path={ROUTER.ORDER.href} element={<PageOrder/>} />
+                        <Route path={ROUTER.WARE_HOUSE.href} element={<PageWarehouse />} />
                     </Route>
                 </Route>
 
