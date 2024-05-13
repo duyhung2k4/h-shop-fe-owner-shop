@@ -10,22 +10,28 @@ const AppNavbar: React.FC = () => {
     const { links } = useContext<TypeAppShellContext>(AppShellContext);
 
     return (
-        <Stack gap={10}>
-            {
-                links.map((item, i) =>
-                    <NavLink
-                        key={i}
-                        onClick={() => navigation(item.href)}
-                        active={path === item.href}
-                        label={item.name}
-                        classNames={{
-                            root: classes.root,
-                            label: classes.label,
-                        }}
-                        leftSection={<Image src={item.hrefIcon} height={30} width={30} />}
-                    />
-                )
-            }
+        <Stack
+            classNames={{
+                root: classes.root
+            }}
+        >
+            <Stack gap={10}>
+                {
+                    links.map((item, i) =>
+                        <NavLink
+                            key={i}
+                            onClick={() => navigation(item.href)}
+                            active={path === item.href}
+                            label={item.name}
+                            classNames={{
+                                root: classes.link,
+                                label: classes.label,
+                            }}
+                            leftSection={<Image src={item.hrefIcon} height={30} width={30} />}
+                        />
+                    )
+                }
+            </Stack>
         </Stack>
     )
 }

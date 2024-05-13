@@ -2,7 +2,7 @@ import React, { createContext } from "react";
 import AppNavbar from "@/components/navbar";
 import AppHeader from "@/components/header";
 
-import { AppShell } from '@mantine/core';
+import { AppShell, Box } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { ObjectRouter, ROUTER } from "@/constants/router";
 import { useOutlet } from "react-router";
@@ -56,10 +56,19 @@ const AppshellLayout: React.FC = () => {
                 <AppShell.Header>
                     <AppHeader />
                 </AppShell.Header>
-                <AppShell.Navbar p="md">
+                <AppShell.Navbar p={0}>
                     <AppNavbar />
                 </AppShell.Navbar>
-                <AppShell.Main>{outlet}</AppShell.Main>
+                <AppShell.Main>
+                    <Box
+                        style={{
+                            width: "100%",
+                            height: "calc(100vh - 2*16px - 60px)"
+                        }}
+                    >
+                        {outlet}
+                    </Box>
+                </AppShell.Main>
             </AppShell>
         </AppShellContext.Provider>
     )

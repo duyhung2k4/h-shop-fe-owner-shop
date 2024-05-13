@@ -1,16 +1,27 @@
 .root {
+    background-color: #1A1D1F;
+    padding: 16px;
+    height: 100vh;
+}
+
+.link {
     border-radius: 8px;
+    transition: 200ms;
 
     &[data-active="true"] {
-        background-color: #e3e3e3;
+        background-color: #929292;
         transition: 200ms;
 
         .label {
-            color: #000000;
+            color: #FFFFFF;
         }
     }
 }
+.link:hover {
+    background-color: #929292 !important;
+    transition: 200ms;
+}
 
 .label {
-    color: #000000;
+    color: #FFFFFF;
 }

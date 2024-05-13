@@ -1,0 +1,11 @@
+.root {
+  width: 100%;
+  justify-content: space-between;
+  height: 50px;
+  align-items: center;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 600;
+}
