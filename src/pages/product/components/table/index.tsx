@@ -2,105 +2,61 @@ import React from 'react';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import 'mantine-react-table/styles.css';
+import TableCustom from '@/components/table';
+
 import { useMemo } from 'react';
-import {
-  MantineReactTable,
-  useMantineReactTable,
-  type MRT_ColumnDef,
-} from 'mantine-react-table';
+import { MRT_ColumnDef, MRT_RowData } from 'mantine-react-table';
+import { Group } from '@mantine/core';
+import classes from "./style.module.css";
 
-type Person = {
-  name: {
-    firstName: string;
-    lastName: string;
-  };
-  address: string;
-  city: string;
-  state: string;
-};
-
-const data: Person[] = [
-  {
-    name: {
-      firstName: 'Zachary',
-      lastName: 'Davis',
-    },
-    address: '261 Battle Ford',
-    city: 'Columbus',
-    state: 'Ohio',
-  },
-  {
-    name: {
-      firstName: 'Robert',
-      lastName: 'Smith',
-    },
-    address: '566 Brakus Inlet',
-    city: 'Westerville',
-    state: 'West Virginia',
-  },
-  {
-    name: {
-      firstName: 'Kevin',
-      lastName: 'Yan',
-    },
-    address: '7777 Kuhic Knoll',
-    city: 'South Linda',
-    state: 'West Virginia',
-  },
-  {
-    name: {
-      firstName: 'John',
-      lastName: 'Upton',
-    },
-    address: '722 Emie Stream',
-    city: 'Huntington',
-    state: 'Washington',
-  },
-  {
-    name: {
-      firstName: 'Nathan',
-      lastName: 'Harris',
-    },
-    address: '1 Kuhic Knoll',
-    city: 'Ohiowa',
-    state: 'Nebraska',
-  },
-];
 
 
 const ProductTable: React.FC = () => {
-  const columns = useMemo<MRT_ColumnDef<Person>[]>(
-    () => [
-      {
-        accessorKey: 'name.firstName',
-        header: 'First Name',
-      },
-      {
-        accessorKey: 'name.lastName',
-        header: 'Last Name',
-      },
-      {
-        accessorKey: 'address',
-        header: 'Address',
-      },
-      {
-        accessorKey: 'city',
-        header: 'City',
-      },
-      {
-        accessorKey: 'state',
-        header: 'State',
-      },
-    ],
-    [],
-  );
+    const data: TableProductColumn[] = useMemo(() => {
+        const data: TableProductColumn[] = Array(50).fill(0).map((_, index) => ({
+            Id: `${index + 1}`,
+            Name: `Name ${index + 1}`,
+            CreateAt: `CreateAt ${index + 1}`,
+            Href: `Href ${index + 1}`,
+        }))
+        return data;
+    }, []);
 
-  const table = useMantineReactTable({
-    columns,
-    data,
-  });
+    const columns = useMemo<MRT_ColumnDef<MRT_RowData>[]>(
+        () => [
+            {
+                accessorKey: 'Id',
+                header: 'ID',
 
-  return <MantineReactTable table={table} />;
+            },
+            {
+                accessorKey: 'Name',
+                header: 'Tên sản phẩm',
+            },
+            {
+                accessorKey: 'Href',
+                header: 'Link sản phẩm',
+            },
+            {
+                accessorKey: 'CreateAt',
+                header: 'Ngày tạo',
+            },
+        ],
+        [],
+    );
+
+    return (
+        <Group classNames={{ root: classes.root }}>
+            <TableCustom columns={columns} data={data} />
+        </Group>
+    );
 };
+
+export type TableProductColumn = {
+    Id: string
+    Name: string
+    Href: string
+    CreateAt?: Date | string
+}
 
 export default ProductTable;

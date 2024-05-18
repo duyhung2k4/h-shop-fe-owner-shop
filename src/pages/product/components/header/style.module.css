@@ -1,7 +1,7 @@
 .root {
   width: 100%;
   justify-content: space-between;
-  height: 50px;
+  height: 100%;
   align-items: center;
 }
 

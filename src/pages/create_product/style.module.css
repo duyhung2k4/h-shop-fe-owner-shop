@@ -1,0 +1,42 @@
+.dropzone {
+    height:100px;
+    justify-content: center;
+    border-radius: 8px;
+    border: 2px dashed grey;
+    cursor: pointer;
+}
+
+.dropzone:hover {
+    background-color: #efefef;
+}
+
+.base_info {
+    padding: 16px;
+    border-radius: 8px;
+    border: 2px solid rgb(194, 194, 194);
+}
+
+.group_image_product {
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 8px;
+    border: 2px solid rgb(194, 194, 194);
+}
+
+.image_product {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px dashed grey;
+}
+
+.title {
+    font-weight: 600;
+}
+
+.more_info {
+    padding: 16px;
+    border-radius: 8px;
+    border: 2px solid rgb(194, 194, 194);
+}

@@ -9,6 +9,7 @@ export const PageProduct = lazy(() => import("@/pages/product"));
 export const PageTypeProduct = lazy(() => import("@/pages/type_product"));
 export const PageOrder = lazy(() => import("@/pages/order"));
 export const PageWarehouse = lazy(() => import("@/pages/warehouse"));
+export const PageCreateProduct = lazy(() => import("@/pages/create_product"));
 
 // other
 export const PageNotFound = lazy(() => import("@/pages/not_found"));

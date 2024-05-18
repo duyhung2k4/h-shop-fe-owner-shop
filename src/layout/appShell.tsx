@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React, { createContext, useEffect, useRef, useState } from "react";
 import AppNavbar from "@/components/navbar";
 import AppHeader from "@/components/header";
 
@@ -6,35 +6,50 @@ import { AppShell, Box } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { ObjectRouter, ROUTER } from "@/constants/router";
 import { useOutlet } from "react-router";
+import useWindowDimensions from "@/hook/screen.hook";
 
 export type TypeAppShellContext = {
     mobileOpened: boolean
     desktopOpened: boolean
+    widthMain: number
     toggleMobile: () => void
     toggleDesktop: () => void
+    setWidthMain: React.Dispatch<React.SetStateAction<number>>
     links: ObjectRouter[]
 }
 
 export const AppShellContext = createContext<TypeAppShellContext>({
     mobileOpened: false,
     desktopOpened: false,
+    widthMain: 0,
     toggleMobile: () => { },
     toggleDesktop: () => { },
+    setWidthMain: () => {},
     links: [],
 })
 
 const AppshellLayout: React.FC = () => {
     const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
     const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
+    const [widthMain, setWidthMain] = useState<number>(0)
     const outlet = useOutlet();
+    const refMain = useRef<HTMLDivElement | null>(null);
+
+    const { width } = useWindowDimensions();
+
+    useEffect(() => {
+        setWidthMain(refMain.current?.offsetWidth || 0);
+    }, [width]);
 
     return (
         <AppShellContext.Provider
             value={{
                 mobileOpened,
                 desktopOpened,
+                widthMain,
                 toggleMobile,
                 toggleDesktop,
+                setWidthMain,
                 links: [
                     ROUTER.DASHBOARD,
                     ROUTER.PRODUCT,
@@ -65,6 +80,7 @@ const AppshellLayout: React.FC = () => {
                             width: "100%",
                             height: "calc(100vh - 2*16px - 60px)"
                         }}
+                        ref={refMain}
                     >
                         {outlet}
                     </Box>
