@@ -1,49 +1,34 @@
 import React, { useContext } from "react";
-import {
-    ActionIcon,
-    Button,
-    Grid,
-    Group,
-    Image,
-    NumberInput,
-    Select,
-    Stack,
-    Text,
-    TextInput,
-} from "@mantine/core";
+
+import { ActionIcon, Button, Grid, Group, Image, NumberInput, Select, Stack, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { DetailProductContext, TypeDetailProductContext } from "..";
 import { AppShellContext, TypeAppShellContext } from "@/layout/appShell";
+import { fileToBytes } from "@/utils/file";
 
-import IconBack from "@/assets/icon/back-svgrepo-com.svg";
-import IconImage from "@/assets/icon/image-square-svgrepo-com.svg";
 import IconCloseCircle from "@/assets/icon/close-circle-svgrepo-com.svg";
+import IconImage from "@/assets/icon/image-square-svgrepo-com.svg";
 
 import classes from "./style.module.css";
-import { fileToBytes } from "@/utils/file";
-import { useCreateProductMutation } from "@/redux/api/product.api";
-import { useNotification } from "@/hook/notification.hook";
-import { useNavigate } from "react-router";
-import { ROUTER } from "@/constants/router";
 
-const CreateProduct: React.FC = () => {
-    const { widthMain } = useContext<TypeAppShellContext>(AppShellContext)
-    const formProduct = useForm<FormCreateProduct>({
+const DetailProductUpdate: React.FC = () => {
+    const { defaultField, moreField } = useContext<TypeDetailProductContext>(DetailProductContext);
+    const { widthMain } = useContext<TypeAppShellContext>(AppShellContext);
+
+    const formProduct = useForm<FormUpdateProduct>({
         initialValues: {
-            name: "",
-            categoryId: 0,
-            price: 0,
-            fields: [],
+            name: defaultField["name"],
+            categoryId: defaultField["categoryId"],
+            price: defaultField["price"],
             files: [],
-        }
-    })
-    const [post, { isLoading }] = useCreateProductMutation();
-    const navigation = useNavigate();
-    const noti = useNotification();
+            fields: Object.keys(moreField).map((key) => ({ name: key, value: moreField[key] })),
+        },
+    });
 
     const match_875px = widthMain > 875 ? true : false;
 
-    const handleSubmit = async (value: FormCreateProduct) => {
+    const handleSubmit = async (value: FormUpdateProduct) => {
         const infoProduct: Record<string, any> = {};
         const files = (await fileToBytes(value.files)).dataReturn;
         const avatar = value.avatar ? (await fileToBytes([value.avatar])).dataReturn[0] : undefined;
@@ -54,34 +39,24 @@ const CreateProduct: React.FC = () => {
         })
         value.fields.forEach((item) => infoProduct[item.name] = item.value);
 
-        const result = await post({
-            infoProduct,
-            files,
-            avatar,
-        });
+        console.log(infoProduct);
 
-        if ("data" in result) {
-            navigation(ROUTER.PRODUCT.href);
-            noti.success("Tạo sản phẩm thành công");
-        } else {
-            noti.error("Tạo sản phẩm thất bại");
-        }
+        // const result = await post({
+        //     infoProduct,
+        //     files,
+        //     avatar,
+        // });
+
+        // if ("data" in result) {
+        //     navigation(ROUTER.PRODUCT.href);
+        //     noti.success("Tạo sản phẩm thành công");
+        // } else {
+        //     noti.error("Tạo sản phẩm thất bại");
+        // }
     }
 
     return (
-        <Stack pb={20}>
-            <Group gap={20}>
-                <ActionIcon
-                    style={{
-                        backgroundColor: "#FFF"
-                    }}
-                    onClick={() => navigation(ROUTER.PRODUCT.href)}
-                >
-                    <Image src={IconBack} height={26} width={26} />
-                </ActionIcon>
-                <Text size="20px" fw={600}>Thêm mới sản phẩm</Text>
-            </Group>
-
+        <Stack pb={20} mt={20}>
             <form id="create-product" onSubmit={formProduct.onSubmit(handleSubmit)}>
                 <Grid gutter={10}>
                     <Grid.Col span={match_875px ? 6 : 12}>
@@ -242,14 +217,13 @@ const CreateProduct: React.FC = () => {
                 <Button
                     type="submit"
                     form="create-product"
-                    loading={isLoading}
                 >Hoàn tất</Button>
             </Group>
         </Stack>
     )
 }
 
-type FormCreateProduct = {
+type FormUpdateProduct = {
     name: string
     categoryId: number
     price: number
@@ -265,4 +239,4 @@ type Field = {
 
 const filedTemporary = ["fields", "files", "avatar"]
 
-export default CreateProduct;
+export default DetailProductUpdate;

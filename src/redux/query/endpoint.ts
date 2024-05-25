@@ -78,6 +78,16 @@ export const endPoint = {
             url: "product/api/v1/protected/product",
             method: "POST",
             headers: HEADER.protectedHeader(),
+        }),
+        getAppProduct: () => ({
+            url: "product/api/v1/protected/product/all",
+            method: "GET",
+            headers: HEADER.protectedHeader(),
+        }),
+        getDetailProduct: () => ({
+            url: "product/api/v1/protected/product/detail",
+            method: "GET",
+            headers: HEADER.protectedHeader(),
         })
     }
 }

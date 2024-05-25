@@ -18,7 +18,9 @@ export type FieldRouter =
     | "TYPE_PRODUCT"
     | "ORDER"
     | "WARE_HOUSE"
-    | "CREATE_PRODUCT";
+    | "CREATE_PRODUCT"
+    | "DETAIL_PRODUCT"
+    | "UPDATE_PRODUCT";
 export const ROUTER: Record<FieldRouter, ObjectRouter> = {
   LOGIN: {
     href: "/login",
@@ -56,6 +58,14 @@ export const ROUTER: Record<FieldRouter, ObjectRouter> = {
   },
   CREATE_PRODUCT: {
     href: "/create-product",
+    type: "protected",
+  },
+  UPDATE_PRODUCT: {
+    href: "/update-product",
+    type: "protected",
+  },
+  DETAIL_PRODUCT: {
+    href: "/product/:id",
     type: "protected",
   }
 }

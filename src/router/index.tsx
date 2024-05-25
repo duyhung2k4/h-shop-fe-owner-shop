@@ -8,11 +8,13 @@ import { Routes, Route } from "react-router";
 import {
     PageCreateProduct,
     PageDashboard,
+    PageDetailProduct,
     PageLogin,
     PageNotFound,
     PageOrder,
     PageProduct,
     PageTypeProduct,
+    PageUpdateProduct,
     PageWarehouse,
 } from "./lazy";
 import { ROUTER } from "@/constants/router";
@@ -29,10 +31,12 @@ const AppRouter: React.FC = () => {
                         <Route path={ROUTER.DASHBOARD.href} element={<PageDashboard />} />
                         <Route path={ROUTER.PRODUCT.href} element={<PageProduct />} />
                         <Route path={ROUTER.TYPE_PRODUCT.href} element={<PageTypeProduct />} />
-                        <Route path={ROUTER.ORDER.href} element={<PageOrder/>} />
+                        <Route path={ROUTER.ORDER.href} element={<PageOrder />} />
                         <Route path={ROUTER.WARE_HOUSE.href} element={<PageWarehouse />} />
 
-                        <Route path={ROUTER.CREATE_PRODUCT.href} element={<PageCreateProduct/>} />
+                        <Route path={ROUTER.CREATE_PRODUCT.href} element={<PageCreateProduct />} />
+                        <Route path={ROUTER.UPDATE_PRODUCT.href} element={<PageUpdateProduct />} />
+                        <Route path={ROUTER.DETAIL_PRODUCT.href} element={<PageDetailProduct />} />
                     </Route>
                 </Route>
 

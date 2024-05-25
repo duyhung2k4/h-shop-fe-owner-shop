@@ -1,6 +1,7 @@
 export type CreateProductRequest = {
     infoProduct: Record<string, any>
     files: FileInfoRequest[]
+    avatar?: FileInfoRequest
 }
 
 export type FileInfoRequest = {
