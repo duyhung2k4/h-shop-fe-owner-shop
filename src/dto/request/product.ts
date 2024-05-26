@@ -9,3 +9,10 @@ export type FileInfoRequest = {
     format: string
     dataBytes: number[]
 }
+
+export type UpdateProductRequest = {
+    infoProduct: Record<string, any>
+    avatar?: FileInfoRequest
+    files: FileInfoRequest[]
+    listFileIdDeletes: number[]
+}

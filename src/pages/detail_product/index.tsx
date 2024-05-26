@@ -4,9 +4,10 @@ import DetailProductUpdate from "./edit";
 import { useGetDetailProductQuery } from "@/redux/api/product.api";
 import { useNavigate, useParams } from "react-router";
 import { ActionIcon, Group, Image, Tabs } from "@mantine/core";
-import { FileWithPath } from "@mantine/dropzone";
 import { DefaultField } from "@/model/product";
 import { ROUTER } from "@/constants/router";
+import { useGetImagesByProductIdQuery } from "@/redux/api/file.api";
+import { ImageProductModel } from "@/model/imageProduct";
 
 import IconBack from "@/assets/icon/back-svgrepo-com.svg";
 import DetailProductTablist from "./components/tablist";
@@ -16,24 +17,36 @@ const DetailProduct: React.FC = () => {
     const navigation = useNavigate();
 
     const {
-        data,
-        refetch,
+        data: productData,
+        refetch: productRefetch,
     } = useGetDetailProductQuery(id || "");
+    const {
+        data: imageProductData,
+        refetch: imageProductRefetch,
+    } = useGetImagesByProductIdQuery(id || "");
+
 
     useEffect(() => {
-        refetch();
+        productRefetch();
+        imageProductRefetch();
     }, []);
 
     const {
         defaultField,
         moreField,
+        images,
+        avatar,
     } = useMemo(() => {
-        const product = data?.data;
+        const product = productData?.data;
+        const images = imageProductData?.data?.images || ([] as ImageProductModel[]);
+        const avatar = imageProductData?.data?.avatar;
 
         if (product === undefined) {
             return {
                 defaultField: {},
                 moreField: {},
+                images: [],
+                avatar,
             }
         };
 
@@ -51,15 +64,18 @@ const DetailProduct: React.FC = () => {
         return {
             defaultField,
             moreField,
+            images,
+            avatar,
         }
-    }, [data]);
+    }, [productData, imageProductData]);
 
     return (
         <DetailProductContext.Provider
             value={{
                 defaultField,
                 moreField,
-                images: [],
+                images,
+                avatar,
                 tabs: [
                     { key: "edit", value: "Chỉnh sửa" },
                     { key: "voucher", value: "Voucher" },
@@ -82,7 +98,7 @@ const DetailProduct: React.FC = () => {
                 <DetailProductTablist />
 
                 <Tabs.Panel value="edit">
-                    {defaultField["_id"] !== undefined && <DetailProductUpdate />}
+                    {defaultField?.["_id"] && <DetailProductUpdate />}
                 </Tabs.Panel>
 
                 <Tabs.Panel value="voucher">
@@ -100,8 +116,8 @@ const DetailProduct: React.FC = () => {
 export type TypeDetailProductContext = {
     defaultField: Record<string, any>
     moreField: Record<string, any>
-    avatar?: FileWithPath
-    images: FileWithPath[]
+    avatar?: ImageProductModel
+    images: ImageProductModel[]
     tabs: { key: string, value: string }[]
 }
 

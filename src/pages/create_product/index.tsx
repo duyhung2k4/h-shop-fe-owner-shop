@@ -151,7 +151,13 @@ const CreateProduct: React.FC = () => {
                         <Stack classNames={{ root: classes.group_image_product }}>
                             <Text className={classes.title}>Hình ảnh sản phẩm</Text>
                             <Dropzone
-                                onDrop={(files) => formProduct.setFieldValue("files", files)}
+                                onDrop={(files) => {
+                                    const data = [
+                                        ...files,
+                                        ...formProduct.values.files,
+                                    ]
+                                    formProduct.setFieldValue("files", data)
+                                }}
                                 onReject={(files) => { console.log(files) }}
                                 accept={IMAGE_MIME_TYPE}
                             >

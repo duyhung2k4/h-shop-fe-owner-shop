@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { ActionIcon, Button, Grid, Group, Image, NumberInput, Select, Stack, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -6,15 +6,33 @@ import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { DetailProductContext, TypeDetailProductContext } from "..";
 import { AppShellContext, TypeAppShellContext } from "@/layout/appShell";
 import { fileToBytes } from "@/utils/file";
+import { ImageProductModel } from "@/model/imageProduct";
+import { useUpdateProductMutation } from "@/redux/api/product.api";
 
 import IconCloseCircle from "@/assets/icon/close-circle-svgrepo-com.svg";
 import IconImage from "@/assets/icon/image-square-svgrepo-com.svg";
 
 import classes from "./style.module.css";
 
+
 const DetailProductUpdate: React.FC = () => {
-    const { defaultField, moreField } = useContext<TypeDetailProductContext>(DetailProductContext);
+    const {
+        defaultField,
+        moreField,
+        images,
+        avatar,
+    } = useContext<TypeDetailProductContext>(DetailProductContext);
     const { widthMain } = useContext<TypeAppShellContext>(AppShellContext);
+
+    const [post] = useUpdateProductMutation();
+
+    const [avatarField, setAvatarField] = useState<ImageProductModel | undefined>(avatar);
+    const [imagesField, setImageFields] = useState<ImageProductModel[]>(images);
+
+    useEffect(() => {
+        setAvatarField(avatar);
+        setImageFields(images);
+    }, [images, avatar]);
 
     const formProduct = useForm<FormUpdateProduct>({
         initialValues: {
@@ -32,6 +50,7 @@ const DetailProductUpdate: React.FC = () => {
         const infoProduct: Record<string, any> = {};
         const files = (await fileToBytes(value.files)).dataReturn;
         const avatar = value.avatar ? (await fileToBytes([value.avatar])).dataReturn[0] : undefined;
+
         Object.keys(value).forEach((key) => {
             if (filedTemporary.filter((item) => item === key).length === 0) {
                 infoProduct[key] = (value as any)[key];
@@ -39,7 +58,18 @@ const DetailProductUpdate: React.FC = () => {
         })
         value.fields.forEach((item) => infoProduct[item.name] = item.value);
 
-        console.log(infoProduct);
+        const listFileIdDeletes = images.
+            filter(item => imagesField.filter(img => img.ID === item.ID).length === 0).
+            map(item => item.ID);
+
+        const result = await post({
+            infoProduct,
+            files,
+            avatar,
+            listFileIdDeletes,
+        });
+
+        console.log(result);
 
         // const result = await post({
         //     infoProduct,
@@ -82,7 +112,7 @@ const DetailProductUpdate: React.FC = () => {
                         <Stack classNames={{ root: classes.group_image_product }}>
                             <Text className={classes.title}>Ảnh đại diện sản phẩm</Text>
                             {
-                                formProduct.values.avatar ?
+                                (avatarField && formProduct.values.avatar === undefined ?
                                     <Group w={"100%"} justify="center">
                                         <Stack
                                             gap={0}
@@ -95,31 +125,58 @@ const DetailProductUpdate: React.FC = () => {
                                                 mr={-12}
                                                 radius={24}
                                                 bg={"#FFFFFF"}
-                                                onClick={() => {
-                                                    formProduct.setFieldValue("avatar", undefined);
-                                                }}
+                                                onClick={() => setAvatarField(undefined)}
                                             >
                                                 <Image src={IconCloseCircle} />
                                             </ActionIcon>
                                             <Image
                                                 classNames={{ root: classes.image_product }}
-                                                src={URL.createObjectURL(formProduct.values.avatar)}
+                                                src={`data:${avatarField.format};base64,${avatarField.data}`}
                                             />
                                         </Stack>
                                     </Group>
                                     :
-                                    <Dropzone
-                                        onDrop={(files) => formProduct.setFieldValue("avatar", files[0])}
-                                        onReject={(files) => { console.log(files) }}
-                                        accept={IMAGE_MIME_TYPE}
-                                        maxFiles={1}
-                                        multiple={false}
-                                    >
-                                        <Group classNames={{ root: classes.dropzone }}>
-                                            <Image src={IconImage} height={40} />
-                                            <Text>Thêm ảnh của sản phẩm vào đây</Text>
-                                        </Group>
-                                    </Dropzone>
+                                    (
+                                        (formProduct.values.avatar) ?
+                                            <Group w={"100%"} justify="center">
+                                                <Stack
+                                                    gap={0}
+                                                    align="end"
+                                                    w={"50%"}
+                                                >
+                                                    <ActionIcon
+                                                        size={24}
+                                                        mb={-12}
+                                                        mr={-12}
+                                                        radius={24}
+                                                        bg={"#FFFFFF"}
+                                                        onClick={() => {
+                                                            formProduct.setFieldValue("avatar", undefined);
+                                                        }}
+                                                    >
+                                                        <Image src={IconCloseCircle} />
+                                                    </ActionIcon>
+                                                    <Image
+                                                        classNames={{ root: classes.image_product }}
+                                                        src={URL.createObjectURL(formProduct.values.avatar)}
+                                                    />
+                                                </Stack>
+                                            </Group>
+                                            :
+                                            <Dropzone
+                                                onDrop={(files) => formProduct.setFieldValue("avatar", files[0])}
+                                                onReject={(files) => { console.log(files) }}
+                                                accept={IMAGE_MIME_TYPE}
+                                                maxFiles={1}
+                                                multiple={false}
+                                            >
+                                                <Group classNames={{ root: classes.dropzone }}>
+                                                    <Image src={IconImage} height={40} />
+                                                    <Text>Thêm ảnh của sản phẩm vào đây</Text>
+                                                </Group>
+                                            </Dropzone>
+                                    )
+                                )
                             }
                         </Stack>
 
@@ -136,6 +193,34 @@ const DetailProductUpdate: React.FC = () => {
                                 </Group>
                             </Dropzone>
                             <Grid>
+                                {
+                                    imagesField.map((item) =>
+                                        <Grid.Col span={4} key={item.ID}>
+                                            <Stack
+                                                gap={0}
+                                                align="end"
+                                            >
+                                                <ActionIcon
+                                                    size={24}
+                                                    mb={-12}
+                                                    mr={-12}
+                                                    radius={24}
+                                                    bg={"#FFFFFF"}
+                                                    onClick={() => {
+                                                        const newData = imagesField.filter((image) => image.ID !== item.ID);
+                                                        setImageFields(newData);
+                                                    }}
+                                                >
+                                                    <Image src={IconCloseCircle} />
+                                                </ActionIcon>
+                                                <Image
+                                                    classNames={{ root: classes.image_product }}
+                                                    src={`data:${item.format};base64,${item.data}`}
+                                                />
+                                            </Stack>
+                                        </Grid.Col>
+                                    )
+                                }
                                 {
                                     formProduct.values.files.map((item, index) =>
                                         <Grid.Col span={4} key={index}>

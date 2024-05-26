@@ -79,6 +79,11 @@ export const endPoint = {
             method: "POST",
             headers: HEADER.protectedHeader(),
         }),
+        update: () => ({
+            url: "product/api/v1/protected/product",
+            method: "PUT",
+            headers: HEADER.protectedHeader(),
+        }),
         getAppProduct: () => ({
             url: "product/api/v1/protected/product/all",
             method: "GET",
@@ -88,6 +93,13 @@ export const endPoint = {
             url: "product/api/v1/protected/product/detail",
             method: "GET",
             headers: HEADER.protectedHeader(),
+        })
+    },
+    file: {
+        getImagesByProductId: () => ({
+            url: "file/api/v1/public/image-product/productId",
+            method: "GET",
+            headers: HEADER.defaultHeader(),
         })
     }
 }

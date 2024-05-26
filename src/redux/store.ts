@@ -4,12 +4,14 @@ import { authApi } from "./api/auth.api";
 import { shopApi } from "./api/shop.api";
 import { typeProductApi } from "./api/typeProduct.api";
 import { productApi } from "./api/product.api";
+import { fileApi } from "./api/file.api";
 
 const middleware = [
   authApi.middleware,
   shopApi.middleware,
   typeProductApi.middleware,
   productApi.middleware,
+  fileApi.middleware,
 ]
 
 const store = configureStore({
