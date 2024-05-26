@@ -49,40 +49,31 @@ const DetailProductUpdate: React.FC = () => {
     const handleSubmit = async (value: FormUpdateProduct) => {
         const infoProduct: Record<string, any> = {};
         const files = (await fileToBytes(value.files)).dataReturn;
-        const avatar = value.avatar ? (await fileToBytes([value.avatar])).dataReturn[0] : undefined;
+        const imageAvatar = value.avatar ? (await fileToBytes([value.avatar])).dataReturn[0] : undefined;
 
         Object.keys(value).forEach((key) => {
             if (filedTemporary.filter((item) => item === key).length === 0) {
                 infoProduct[key] = (value as any)[key];
             }
         })
+        infoProduct["_id"] = defaultField["_id"]
         value.fields.forEach((item) => infoProduct[item.name] = item.value);
 
         const listFileIdDeletes = images.
             filter(item => imagesField.filter(img => img.ID === item.ID).length === 0).
             map(item => item.ID);
+        if(!imageAvatar && !avatarField && avatar) {
+            listFileIdDeletes.push(avatar.ID);
+        }
 
         const result = await post({
             infoProduct,
             files,
-            avatar,
+            avatar: imageAvatar,
             listFileIdDeletes,
         });
 
         console.log(result);
-
-        // const result = await post({
-        //     infoProduct,
-        //     files,
-        //     avatar,
-        // });
-
-        // if ("data" in result) {
-        //     navigation(ROUTER.PRODUCT.href);
-        //     noti.success("Tạo sản phẩm thành công");
-        // } else {
-        //     noti.error("Tạo sản phẩm thất bại");
-        // }
     }
 
     return (

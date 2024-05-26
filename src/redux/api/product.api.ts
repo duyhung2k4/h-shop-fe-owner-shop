@@ -17,7 +17,7 @@ export const productApi = createApi({
         }),
         updateProduct: builder.mutation<QueryReturnType<ProductModel>, UpdateProductRequest>({
             query: (payload) => ({
-                ...endPoint.product.createProduct(),
+                ...endPoint.product.update(),
                 data: payload,
             }),
         }),
