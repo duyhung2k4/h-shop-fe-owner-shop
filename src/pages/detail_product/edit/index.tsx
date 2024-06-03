@@ -15,6 +15,7 @@ import IconTrash from "@/assets/icon/trash-alt-svgrepo-com.svg";
 
 import classes from "./style.module.css";
 import { useGetCategoryQuery } from "@/redux/api/typeProduct.api";
+import { useNotification } from "@/hook/notification.hook";
 
 
 const DetailProductUpdate: React.FC = () => {
@@ -25,8 +26,9 @@ const DetailProductUpdate: React.FC = () => {
         avatar,
     } = useContext<TypeDetailProductContext>(DetailProductContext);
     const { widthMain } = useContext<TypeAppShellContext>(AppShellContext);
+    const noti = useNotification();
 
-    const [post] = useUpdateProductMutation();
+    const [post, { isLoading }] = useUpdateProductMutation();
     const {
         data,
         refetch,
@@ -91,7 +93,11 @@ const DetailProductUpdate: React.FC = () => {
             listFileIdDeletes,
         });
 
-        console.log(result);
+        if ("data" in result) {
+            noti.success("Chỉnh sửa sản phẩm thành công");
+        } else {
+            noti.error("Chỉnh sửa sản phẩm thất bại");
+        }
     }
 
     return (
@@ -330,6 +336,7 @@ const DetailProductUpdate: React.FC = () => {
                 <Button
                     type="submit"
                     form="create-product"
+                    loading={isLoading}
                 >Hoàn tất</Button>
             </Group>
         </Stack>
