@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 
-import { ActionIcon, Button, Grid, Group, Image, NumberInput, Select, Stack, Text, TextInput } from "@mantine/core";
+import { ActionIcon, Button, Grid, Group, Image, NumberInput, Select, Stack, Text, TextInput, Tooltip } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { DetailProductContext, TypeDetailProductContext } from "..";
@@ -11,8 +11,10 @@ import { useUpdateProductMutation } from "@/redux/api/product.api";
 
 import IconCloseCircle from "@/assets/icon/close-circle-svgrepo-com.svg";
 import IconImage from "@/assets/icon/image-square-svgrepo-com.svg";
+import IconTrash from "@/assets/icon/trash-alt-svgrepo-com.svg";
 
 import classes from "./style.module.css";
+import { useGetCategoryQuery } from "@/redux/api/typeProduct.api";
 
 
 const DetailProductUpdate: React.FC = () => {
@@ -25,15 +27,19 @@ const DetailProductUpdate: React.FC = () => {
     const { widthMain } = useContext<TypeAppShellContext>(AppShellContext);
 
     const [post] = useUpdateProductMutation();
+    const {
+        data,
+        refetch,
+    } = useGetCategoryQuery(null);
 
     const [avatarField, setAvatarField] = useState<ImageProductModel | undefined>(avatar);
     const [imagesField, setImageFields] = useState<ImageProductModel[]>(images);
 
-    useEffect(() => {
-        setAvatarField(avatar);
-        setImageFields(images);
-    }, [images, avatar]);
+    const categorys = useMemo(() => {
+        return data?.data || [];
+    }, [data]);
 
+    
     const formProduct = useForm<FormUpdateProduct>({
         initialValues: {
             name: defaultField["name"],
@@ -43,6 +49,15 @@ const DetailProductUpdate: React.FC = () => {
             fields: Object.keys(moreField).map((key) => ({ name: key, value: moreField[key] })),
         },
     });
+    
+    useEffect(() => {
+        setAvatarField(avatar);
+        setImageFields(images);
+    }, [images, avatar]);
+
+    useEffect(() => {
+        refetch();
+    }, []);
 
     const match_875px = widthMain > 875 ? true : false;
 
@@ -56,7 +71,9 @@ const DetailProductUpdate: React.FC = () => {
                 infoProduct[key] = (value as any)[key];
             }
         })
+        
         infoProduct["_id"] = defaultField["_id"]
+        infoProduct["categoryId"] = Number(infoProduct["categoryId"]);
         value.fields.forEach((item) => infoProduct[item.name] = item.value);
 
         const listFileIdDeletes = images.
@@ -68,6 +85,7 @@ const DetailProductUpdate: React.FC = () => {
 
         const result = await post({
             infoProduct,
+            listFieldDelete: [],
             files,
             avatar: imageAvatar,
             listFileIdDeletes,
@@ -90,7 +108,10 @@ const DetailProductUpdate: React.FC = () => {
                             />
                             <Select
                                 label="Danh mục"
-                                data={[]}
+                                data={categorys.map((item) => ({
+                                    value: `${item.ID}`,
+                                    label: item.name,
+                                }))}
                                 {...formProduct.getInputProps("categoryId")}
                             />
                             <NumberInput
@@ -248,7 +269,7 @@ const DetailProductUpdate: React.FC = () => {
                             <Text className={classes.title}>Thông tin thêm</Text>
                             {
                                 formProduct.values.fields.map((item, i) =>
-                                    <Grid key={i}>
+                                    <Grid key={i} columns={13}>
                                         <Grid.Col span={6}>
                                             <TextInput
                                                 placeholder="Nhập tên trường"
@@ -272,6 +293,22 @@ const DetailProductUpdate: React.FC = () => {
                                                     formProduct.setFieldValue("fields", listNewValues);
                                                 }}
                                             />
+                                        </Grid.Col>
+                                        <Grid.Col span={1}>
+                                            <Group h={"100%"} w={"100%"} justify="center">
+                                                <Tooltip label="Xóa thông tin">
+                                                    <ActionIcon 
+                                                        size={24} 
+                                                        bg={"#FFFFFF"}
+                                                        onClick={() => {
+                                                            const listNewValues = formProduct.values.fields.filter((_, index) => index !== i);
+                                                            formProduct.setFieldValue("fields", listNewValues);
+                                                        }}
+                                                    >
+                                                        <Image src={IconTrash} />
+                                                    </ActionIcon>
+                                                </Tooltip>
+                                            </Group>
                                         </Grid.Col>
                                     </Grid>
                                 )

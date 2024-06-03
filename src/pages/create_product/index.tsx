@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import {
     ActionIcon,
     Button,
@@ -10,21 +10,24 @@ import {
     Stack,
     Text,
     TextInput,
+    Tooltip,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { AppShellContext, TypeAppShellContext } from "@/layout/appShell";
-
-import IconBack from "@/assets/icon/back-svgrepo-com.svg";
-import IconImage from "@/assets/icon/image-square-svgrepo-com.svg";
-import IconCloseCircle from "@/assets/icon/close-circle-svgrepo-com.svg";
-
-import classes from "./style.module.css";
 import { fileToBytes } from "@/utils/file";
 import { useCreateProductMutation } from "@/redux/api/product.api";
 import { useNotification } from "@/hook/notification.hook";
 import { useNavigate } from "react-router";
 import { ROUTER } from "@/constants/router";
+
+import classes from "./style.module.css";
+
+import IconBack from "@/assets/icon/back-svgrepo-com.svg";
+import IconImage from "@/assets/icon/image-square-svgrepo-com.svg";
+import IconCloseCircle from "@/assets/icon/close-circle-svgrepo-com.svg";
+import IconTrash from "@/assets/icon/trash-alt-svgrepo-com.svg";
+import { useGetCategoryQuery } from "@/redux/api/typeProduct.api";
 
 const CreateProduct: React.FC = () => {
     const { widthMain } = useContext<TypeAppShellContext>(AppShellContext)
@@ -36,12 +39,26 @@ const CreateProduct: React.FC = () => {
             fields: [],
             files: [],
         }
-    })
+    });
+
     const [post, { isLoading }] = useCreateProductMutation();
+    const {
+        data,
+        refetch,
+    } = useGetCategoryQuery(null);
+
     const navigation = useNavigate();
     const noti = useNotification();
 
     const match_875px = widthMain > 875 ? true : false;
+
+    const categorys = useMemo(() => {
+        return data?.data || [];
+    }, [data]);
+
+    useEffect(() => {
+        refetch();
+    }, []);
 
     const handleSubmit = async (value: FormCreateProduct) => {
         const infoProduct: Record<string, any> = {};
@@ -51,7 +68,9 @@ const CreateProduct: React.FC = () => {
             if (filedTemporary.filter((item) => item === key).length === 0) {
                 infoProduct[key] = (value as any)[key];
             }
-        })
+        });
+        
+        infoProduct["categoryId"] = Number(infoProduct["categoryId"]);
         value.fields.forEach((item) => infoProduct[item.name] = item.value);
 
         const result = await post({
@@ -94,7 +113,10 @@ const CreateProduct: React.FC = () => {
                             />
                             <Select
                                 label="Danh mục"
-                                data={[]}
+                                data={categorys.map((item) => ({
+                                    value: `${item.ID}`,
+                                    label: item.name,
+                                }))}
                                 {...formProduct.getInputProps("categoryId")}
                             />
                             <NumberInput
@@ -203,7 +225,7 @@ const CreateProduct: React.FC = () => {
                             <Text className={classes.title}>Thông tin thêm</Text>
                             {
                                 formProduct.values.fields.map((item, i) =>
-                                    <Grid key={i}>
+                                    <Grid key={i} columns={13}>
                                         <Grid.Col span={6}>
                                             <TextInput
                                                 placeholder="Nhập tên trường"
@@ -227,6 +249,22 @@ const CreateProduct: React.FC = () => {
                                                     formProduct.setFieldValue("fields", listNewValues);
                                                 }}
                                             />
+                                        </Grid.Col>
+                                        <Grid.Col span={1}>
+                                            <Group h={"100%"} w={"100%"} justify="center">
+                                                <Tooltip label="Xóa thông tin">
+                                                    <ActionIcon
+                                                        size={24}
+                                                        bg={"#FFFFFF"}
+                                                        onClick={() => {
+                                                            const listNewValues = formProduct.values.fields.filter((_, index) => index !== i);
+                                                            formProduct.setFieldValue("fields", listNewValues);
+                                                        }}
+                                                    >
+                                                        <Image src={IconTrash} />
+                                                    </ActionIcon>
+                                                </Tooltip>
+                                            </Group>
                                         </Grid.Col>
                                     </Grid>
                                 )

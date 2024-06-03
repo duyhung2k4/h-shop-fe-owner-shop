@@ -12,6 +12,7 @@ export type FileInfoRequest = {
 
 export type UpdateProductRequest = {
     infoProduct: Record<string, any>
+    listFieldDelete: string[]
     avatar?: FileInfoRequest
     files: FileInfoRequest[]
     listFileIdDeletes: number[]
