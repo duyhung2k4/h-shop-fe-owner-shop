@@ -11,6 +11,8 @@ import { ImageProductModel } from "@/model/imageProduct";
 
 import IconBack from "@/assets/icon/back-svgrepo-com.svg";
 import DetailProductTablist from "./components/tablist";
+import TypeInWarehouse from "./typeInWarehouse";
+import ModalCreateTypeInWarehouse from "./components/modal/index.Create";
 
 const DetailProduct: React.FC = () => {
     const { id } = useParams();
@@ -78,6 +80,7 @@ const DetailProduct: React.FC = () => {
                 avatar,
                 tabs: [
                     { key: "edit", value: "Chỉnh sửa" },
+                    { key: "typeInWarehouse", value: "Loại sản phẩm" },
                     { key: "voucher", value: "Voucher" },
                     { key: "delete", value: "Xóa" },
                 ],
@@ -101,6 +104,10 @@ const DetailProduct: React.FC = () => {
                     {defaultField?.["_id"] && <DetailProductUpdate />}
                 </Tabs.Panel>
 
+                <Tabs.Panel value="typeInWarehouse">
+                    <TypeInWarehouse/>
+                </Tabs.Panel>
+
                 <Tabs.Panel value="voucher">
                     Messages tab content
                 </Tabs.Panel>
@@ -109,6 +116,8 @@ const DetailProduct: React.FC = () => {
                     Settings tab content
                 </Tabs.Panel>
             </Tabs>
+
+            <ModalCreateTypeInWarehouse/>
         </DetailProductContext.Provider>
     )
 }

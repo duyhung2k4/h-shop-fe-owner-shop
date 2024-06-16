@@ -93,6 +93,12 @@ export const endPoint = {
             url: "product/api/v1/protected/product/detail",
             method: "GET",
             headers: HEADER.protectedHeader(),
+        }),
+
+        createTypeInWarehouse: () => ({
+            url: "product/api/v1/protected/type-in-warehouse/",
+            method: "POST",
+            headers: HEADER.protectedHeader(),
         })
     },
     file: {
@@ -101,5 +107,5 @@ export const endPoint = {
             method: "GET",
             headers: HEADER.defaultHeader(),
         })
-    }
+    },
 }
