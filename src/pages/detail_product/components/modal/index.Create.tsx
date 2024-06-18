@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, Group, Modal, NumberInput, Stack, TextInput } from "@mantine/core";
 
 import classes from "./styles.module.css";
@@ -7,10 +7,12 @@ import { useCreateTypeInWarehouseMutation } from "@/redux/api/product.api";
 import { useForm } from "@mantine/form";
 import { CreateTypeInWarehouseReq } from "@/dto/request/typeInWarehouse";
 import { useNotification } from "@/hook/notification.hook";
+import { DetailProductContext, TypeDetailProductContext } from "../..";
 
 const ModalCreateTypeInWarehouse: React.FC = () => {
     const { id } = useParams();
     const noti = useNotification();
+    const { modalInsertTypeInWarehouse, setModalInsertTypeInWarehouse } = useContext<TypeDetailProductContext>(DetailProductContext);
     const [post, { isLoading }] = useCreateTypeInWarehouseMutation();
 
     const form = useForm<FormCreateTypeInWarehouse>({
@@ -32,20 +34,22 @@ const ModalCreateTypeInWarehouse: React.FC = () => {
         };
 
         const result = await post(newTypeInWarehouse);
-
+        setModalInsertTypeInWarehouse(false);
+        
         if ("error" in result) {
             noti.error("Thêm mới thất bại");
             return;
         }
-
+        
+        form.reset();
         noti.success("Thêm mới thành công");
     }
 
     return (
         <Modal
-            opened
+            opened={modalInsertTypeInWarehouse}
             title="Thêm 1 loại sản phẩm"
-            onClose={() => { }}
+            onClose={() => setModalInsertTypeInWarehouse(false)}
             centered
             classNames={{
                 header: classes.header,

@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useMemo } from "react";
+import React, { createContext, useEffect, useMemo, useState } from "react";
 import DetailProductUpdate from "./edit";
 
 import { useGetDetailProductQuery } from "@/redux/api/product.api";
@@ -17,6 +17,8 @@ import ModalCreateTypeInWarehouse from "./components/modal/index.Create";
 const DetailProduct: React.FC = () => {
     const { id } = useParams();
     const navigation = useNavigate();
+
+    const [modalInsertTypeInWarehouse, setModalInsertTypeInWarehouse] = useState<boolean>(false);
 
     const {
         data: productData,
@@ -84,6 +86,8 @@ const DetailProduct: React.FC = () => {
                     { key: "voucher", value: "Voucher" },
                     { key: "delete", value: "Xóa" },
                 ],
+                modalInsertTypeInWarehouse,
+                setModalInsertTypeInWarehouse,
             }}
         >
             <Group gap={20}>
@@ -128,6 +132,8 @@ export type TypeDetailProductContext = {
     avatar?: ImageProductModel
     images: ImageProductModel[]
     tabs: { key: string, value: string }[]
+    modalInsertTypeInWarehouse: boolean
+    setModalInsertTypeInWarehouse: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const DetailProductContext = createContext<TypeDetailProductContext>({
@@ -135,6 +141,8 @@ export const DetailProductContext = createContext<TypeDetailProductContext>({
     moreField: {},
     images: [],
     tabs: [],
+    modalInsertTypeInWarehouse: false,
+    setModalInsertTypeInWarehouse: () => {},
 })
 
 export default DetailProduct;
