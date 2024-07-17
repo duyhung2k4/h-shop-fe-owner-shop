@@ -83,7 +83,6 @@ const DetailProduct: React.FC = () => {
                 tabs: [
                     { key: "edit", value: "Chỉnh sửa" },
                     { key: "typeInWarehouse", value: "Loại sản phẩm" },
-                    { key: "voucher", value: "Voucher" },
                     { key: "delete", value: "Xóa" },
                 ],
                 modalInsertTypeInWarehouse,
@@ -110,10 +109,6 @@ const DetailProduct: React.FC = () => {
 
                 <Tabs.Panel value="typeInWarehouse">
                     <TypeInWarehouse/>
-                </Tabs.Panel>
-
-                <Tabs.Panel value="voucher">
-                    Messages tab content
                 </Tabs.Panel>
 
                 <Tabs.Panel value="delete">

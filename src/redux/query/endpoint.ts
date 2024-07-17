@@ -95,6 +95,12 @@ export const endPoint = {
             headers: HEADER.protectedHeader(),
         }),
 
+        getTypeInWarehouse: () => ({
+            url: "product/api/v1/protected/type-in-warehouse",
+            method: "GET",
+            headers: HEADER.protectedHeader(),
+        }),
+
         createTypeInWarehouse: () => ({
             url: "product/api/v1/protected/type-in-warehouse/",
             method: "POST",

@@ -5,6 +5,7 @@ import { endPoint } from "../query/endpoint";
 import { CreateProductRequest, UpdateProductRequest } from "@/dto/request/product";
 import { ProductModel } from "@/model/product";
 import { CreateTypeInWarehouseReq } from "@/dto/request/typeInWarehouse";
+import { TypeInWarehouseRes } from "@/dto/response/typeInWarehouse.response";
 
 export const productApi = createApi({
     reducerPath: "productApi",
@@ -34,6 +35,13 @@ export const productApi = createApi({
             })
         }),
 
+        getTypeInWarehouse: builder.query<QueryReturnType<TypeInWarehouseRes[]>, string>({
+            query: (payload) => ({
+                ...endPoint.product.getTypeInWarehouse(),
+                params: { id: payload },
+            })
+        }),
+
         createTypeInWarehouse: builder.mutation<QueryReturnType<any>, CreateTypeInWarehouseReq>({
             query: (payload) => ({
                 ...endPoint.product.createTypeInWarehouse(),
@@ -48,6 +56,7 @@ export const {
     useUpdateProductMutation,
     useGetAllProductQuery,
     useGetDetailProductQuery,
+    useGetTypeInWarehouseQuery,
 
     useCreateTypeInWarehouseMutation,
 } = productApi;

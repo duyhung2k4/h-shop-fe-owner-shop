@@ -1,12 +1,12 @@
 import React, { createContext, useEffect, useRef, useState } from "react";
 import AppNavbar from "@/components/navbar";
 import AppHeader from "@/components/header";
+import useWindowDimensions from "@/hook/screen.hook";
 
+import { useOutlet } from "react-router";
 import { AppShell, Box } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { ObjectRouter, ROUTER } from "@/constants/router";
-import { useOutlet } from "react-router";
-import useWindowDimensions from "@/hook/screen.hook";
 
 export type TypeAppShellContext = {
     mobileOpened: boolean
@@ -53,9 +53,7 @@ const AppshellLayout: React.FC = () => {
                 links: [
                     ROUTER.DASHBOARD,
                     ROUTER.PRODUCT,
-                    ROUTER.TYPE_PRODUCT,
                     ROUTER.ORDER,
-                    ROUTER.WARE_HOUSE,
                 ],
             }}
         >
