@@ -84,6 +84,11 @@ export const endPoint = {
             method: "PUT",
             headers: HEADER.protectedHeader(),
         }),
+        delete: () => ({
+            url: "product/api/v1/protected/product",
+            method: "DELETE",
+            headers: HEADER.protectedHeader(),
+        }),
         getAppProduct: () => ({
             url: "product/api/v1/protected/product/all",
             method: "GET",
@@ -100,10 +105,19 @@ export const endPoint = {
             method: "GET",
             headers: HEADER.protectedHeader(),
         }),
-
         createTypeInWarehouse: () => ({
             url: "product/api/v1/protected/type-in-warehouse/",
             method: "POST",
+            headers: HEADER.protectedHeader(),
+        }),
+        updateTypeInWarehouse: () => ({
+            url: "product/api/v1/protected/type-in-warehouse/",
+            method: "PUT",
+            headers: HEADER.protectedHeader(),
+        }),
+        deleteTypeInWarehouse: () => ({
+            url: "product/api/v1/protected/type-in-warehouse/",
+            method: "DELETE",
             headers: HEADER.protectedHeader(),
         })
     },

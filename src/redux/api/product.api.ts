@@ -2,9 +2,9 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQuery } from "../query/baseQuery";
 import { QueryReturnType } from "@/dto/request/base.request";
 import { endPoint } from "../query/endpoint";
-import { CreateProductRequest, UpdateProductRequest } from "@/dto/request/product";
+import { CreateProductRequest, DeleteProductRequest, UpdateProductRequest } from "@/dto/request/product";
 import { ProductModel } from "@/model/product";
-import { CreateTypeInWarehouseReq } from "@/dto/request/typeInWarehouse";
+import { CreateTypeInWarehouseReq, DeleteTypeInWarehouseReq, UpdateTypeInWarehouseReq } from "@/dto/request/typeInWarehouse";
 import { TypeInWarehouseRes } from "@/dto/response/typeInWarehouse.response";
 
 export const productApi = createApi({
@@ -20,6 +20,12 @@ export const productApi = createApi({
         updateProduct: builder.mutation<QueryReturnType<ProductModel>, UpdateProductRequest>({
             query: (payload) => ({
                 ...endPoint.product.update(),
+                data: payload,
+            }),
+        }),
+        deleteProduct: builder.mutation<QueryReturnType<ProductModel>, DeleteProductRequest>({
+            query: (payload) => ({
+                ...endPoint.product.delete(),
                 data: payload,
             }),
         }),
@@ -41,22 +47,36 @@ export const productApi = createApi({
                 params: { id: payload },
             })
         }),
-
         createTypeInWarehouse: builder.mutation<QueryReturnType<any>, CreateTypeInWarehouseReq>({
             query: (payload) => ({
                 ...endPoint.product.createTypeInWarehouse(),
                 data: payload,
             })
         }),
+        updateTypeInWarehouse: builder.mutation<QueryReturnType<any>, UpdateTypeInWarehouseReq>({
+            query: (payload) => ({
+                ...endPoint.product.updateTypeInWarehouse(),
+                data: payload,
+            })
+        }),
+        deleteTypeInWarehouse: builder.mutation<QueryReturnType<any>, DeleteTypeInWarehouseReq>({
+            query: (payload) => ({
+                ...endPoint.product.deleteTypeInWarehouse(),
+                data: payload,
+            })
+        })
     })
 });
 
 export const {
-    useCreateProductMutation,
-    useUpdateProductMutation,
     useGetAllProductQuery,
     useGetDetailProductQuery,
+    useCreateProductMutation,
+    useUpdateProductMutation,
+    useDeleteProductMutation,
+    
     useGetTypeInWarehouseQuery,
-
     useCreateTypeInWarehouseMutation,
+    useUpdateTypeInWarehouseMutation,
+    useDeleteTypeInWarehouseMutation,
 } = productApi;

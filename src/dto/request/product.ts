@@ -17,3 +17,7 @@ export type UpdateProductRequest = {
     files: FileInfoRequest[]
     listFileIdDeletes: number[]
 }
+
+export type DeleteProductRequest = {
+    productId: string
+}

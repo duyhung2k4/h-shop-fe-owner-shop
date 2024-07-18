@@ -7,12 +7,16 @@ import { useCreateTypeInWarehouseMutation } from "@/redux/api/product.api";
 import { useForm } from "@mantine/form";
 import { CreateTypeInWarehouseReq } from "@/dto/request/typeInWarehouse";
 import { useNotification } from "@/hook/notification.hook";
-import { DetailProductContext, TypeDetailProductContext } from "../..";
+import { DetailProductContext, TypeDetailProductContext } from "../../..";
 
 const ModalCreateTypeInWarehouse: React.FC = () => {
     const { id } = useParams();
     const noti = useNotification();
-    const { modalInsertTypeInWarehouse, setModalInsertTypeInWarehouse } = useContext<TypeDetailProductContext>(DetailProductContext);
+    const { 
+        modalInsertTypeInWarehouse, 
+        setModalInsertTypeInWarehouse,
+        typeInWarehousesRefetch,
+    } = useContext<TypeDetailProductContext>(DetailProductContext);
     const [post, { isLoading }] = useCreateTypeInWarehouseMutation();
 
     const form = useForm<FormCreateTypeInWarehouse>({
@@ -43,6 +47,7 @@ const ModalCreateTypeInWarehouse: React.FC = () => {
         
         form.reset();
         noti.success("Thêm mới thành công");
+        typeInWarehousesRefetch();
     }
 
     return (

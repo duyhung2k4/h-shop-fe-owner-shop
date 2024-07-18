@@ -40,12 +40,11 @@ const DetailProductUpdate: React.FC = () => {
     const categorys = useMemo(() => {
         return data?.data || [];
     }, [data]);
-
     
     const formProduct = useForm<FormUpdateProduct>({
         initialValues: {
             name: defaultField["name"],
-            categoryId: defaultField["categoryId"],
+            categoryId: `${defaultField["categoryId"]}`,
             price: defaultField["price"],
             files: [],
             fields: Object.keys(moreField).map((key) => ({ name: key, value: moreField[key] })),
@@ -253,7 +252,7 @@ const DetailProductUpdate: React.FC = () => {
                                                     radius={24}
                                                     bg={"#FFFFFF"}
                                                     onClick={() => {
-                                                        const newImages = formProduct.values.files.filter((item, i) => i !== index);
+                                                        const newImages = formProduct.values.files.filter((_, i) => i !== index);
                                                         formProduct.setFieldValue("files", newImages);
                                                     }}
                                                 >
@@ -345,7 +344,7 @@ const DetailProductUpdate: React.FC = () => {
 
 type FormUpdateProduct = {
     name: string
-    categoryId: number
+    categoryId: string
     price: number
     fields: Field[]
     avatar?: FileWithPath
