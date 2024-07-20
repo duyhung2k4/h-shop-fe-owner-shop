@@ -9,6 +9,9 @@ export type ProfileModel = BaseModel & {
   familyName: string
   picture: string
   locale: string
+  phone: string
+  gender: string
+  address: string
 
   user?: UserModel
 }

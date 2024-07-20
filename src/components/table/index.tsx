@@ -1,7 +1,8 @@
 import React from "react";
+import classes from "./style.module.css";
+import 'mantine-react-table/styles.css';
 import { MantineReactTable, MRT_ColumnDef, MRT_RowData } from "mantine-react-table";
 import { Box } from "@mantine/core";
-import classes from "./style.module.css";
 
 
 const TableCustom: React.FC<TableCustomType> = (props) => {
@@ -18,7 +19,7 @@ const TableCustom: React.FC<TableCustomType> = (props) => {
                     showHideSearch: "Tìm kiếm",
                     toggleDensity: "Độ cao dòng",
                     toggleFullScreen: "Toàn màn hình",
-                    noRecordsToDisplay: "Không có sản phẩm nào",
+                    noRecordsToDisplay: "Không có dữ liệu",
                     showAll: "Hiển thị tất cả",
                     hideAll: "Ẩn tất cả",
                 }}

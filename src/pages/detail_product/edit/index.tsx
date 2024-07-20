@@ -47,6 +47,7 @@ const DetailProductUpdate: React.FC = () => {
             categoryId: `${defaultField["categoryId"]}`,
             price: defaultField["price"],
             files: [],
+            count: defaultField["count"],
             fields: Object.keys(moreField).map((key) => ({ name: key, value: moreField[key] })),
         },
     });
@@ -123,6 +124,11 @@ const DetailProductUpdate: React.FC = () => {
                                 placeholder="Nhập giá sản phẩm"
                                 label="Giá sản phẩm"
                                 {...formProduct.getInputProps("price")}
+                            />
+                            <NumberInput
+                                placeholder="Nhập số lượng"
+                                label="Số lượng"
+                                {...formProduct.getInputProps("count")}
                             />
                         </Stack>
 
@@ -344,6 +350,7 @@ const DetailProductUpdate: React.FC = () => {
 
 type FormUpdateProduct = {
     name: string
+    count: number
     categoryId: string
     price: number
     fields: Field[]

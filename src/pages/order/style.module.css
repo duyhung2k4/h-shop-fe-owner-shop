@@ -1,0 +1,17 @@
+.root {
+    width: 100%;
+    height: 100%;
+
+    & :global(.mantine-ActionIcon-icon) {
+        background-color: #FFF;
+    }
+
+    & :global(.mantine-ActionIcon-root) {
+        border: 0px;
+    }
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 600;
+}

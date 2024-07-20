@@ -1,7 +1,4 @@
 import React, { useContext } from 'react';
-import '@mantine/core/styles.css';
-import '@mantine/dates/styles.css';
-import 'mantine-react-table/styles.css';
 import TableCustom from '@/components/table';
 import dayjs from "dayjs";
 

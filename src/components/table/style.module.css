@@ -1,4 +1,7 @@
 .root {
-    height: 100%;
     width: 100%;
+
+    & :global(.mantine-focus-auto) {
+        --mrt-paper-width: auto !important
+    }
 }

@@ -5,11 +5,18 @@ import { QueryReturnType } from "@/dto/request/base.request";
 import { AuthResponse } from "@/dto/response/auth.response";
 import { LoginGoogleRequest } from "@/dto/request/auth.request";
 import { ROLE_APP } from "@/model/variable";
+import { ProfileModel } from "@/model/profile";
 
 export const authApi = createApi({
     reducerPath: "authApi",
     baseQuery: axiosBaseQuery(),
     endpoints: (builder) => ({
+        getProfile: builder.query<QueryReturnType<ProfileModel>, number>({
+            query: (payload) => ({
+                ...endPoint.auth.getProfile(),
+                params: { id: payload },
+            }),
+        }),
         loginGoogle: builder.mutation<QueryReturnType<AuthResponse>, LoginGoogleRequest>({
             query: (payload) => ({
                 ...endPoint.auth.loginGoogle(),
@@ -29,6 +36,7 @@ export const authApi = createApi({
 });
 
 export const {
+    useGetProfileQuery,
     useLoginGoogleMutation,
     useRefreshTokenMutation,
 } = authApi;

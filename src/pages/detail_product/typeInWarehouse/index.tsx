@@ -9,9 +9,6 @@ import { MRT_ColumnDef, MRT_RowData } from "mantine-react-table";
 import classes from "./style.module.css";
 import IconEdit from "@/assets/icon/edit-svgrepo-com.svg";
 import IconTrash from "@/assets/icon/trash.svg";
-import '@mantine/core/styles.css';
-import '@mantine/dates/styles.css';
-import 'mantine-react-table/styles.css';
 import { TypeInWarehouseRes } from "@/dto/response/typeInWarehouse.response";
 
 

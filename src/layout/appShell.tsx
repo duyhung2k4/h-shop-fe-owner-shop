@@ -53,7 +53,10 @@ const AppshellLayout: React.FC = () => {
                 links: [
                     ROUTER.DASHBOARD,
                     ROUTER.PRODUCT,
-                    ROUTER.ORDER,
+                    ROUTER.ORDER_PENDING,
+                    ROUTER.ACCEPT_PAYMENT,
+                    ROUTER.ORDER_DESTROY,
+                    ROUTER.ORDER_HISTORY,
                 ],
             }}
         >

@@ -23,6 +23,11 @@ export const HEADER = {
 
 export const endPoint = {
     auth: {
+        getProfile: () => ({
+            url: "account/api/v1/public/profile",
+            method: "GET",
+            headers: HEADER.defaultHeader(),
+        }),
         loginGoogle: () => ({
             url: "account/api/v1/public/login-google",
             method: "POST",
@@ -32,7 +37,7 @@ export const endPoint = {
             url: "account/api/v1/protected/refresh-token",
             method: "POST",
             headers: HEADER.refreshTokenHeader(),
-        })
+        }),
     },
     shop: {
         getShop: () => ({
@@ -128,4 +133,31 @@ export const endPoint = {
             headers: HEADER.defaultHeader(),
         })
     },
+    order: {
+        order: () => ({
+            url: "order/api/v1/protected/order",
+            method: "POST",
+            headers: HEADER.protectedHeader(),
+        }),
+        changeStatus: () => ({
+            url: "order/api/v1/protected/order/change-status",
+            method: "POST",
+            headers: HEADER.protectedHeader(),
+        }),
+        changeStatusV2: () => ({
+            url: "order/api/v1/protected/order/change-status-v2",
+            method: "POST",
+            headers: HEADER.protectedHeader(),
+        }),
+        getPurchaseOrder: () => ({
+            url: "order/api/v1/protected/order/purchase-order",
+            method: "GET",
+            headers: HEADER.protectedHeader(),
+        }),
+        adminGetOrder: () => ({
+            url: "order/api/v1/protected/order/admin-get-order",
+            method: "GET",
+            headers: HEADER.protectedHeader(),
+        })
+    }
 }

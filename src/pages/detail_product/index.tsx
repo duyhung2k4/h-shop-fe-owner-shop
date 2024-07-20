@@ -12,7 +12,7 @@ import { ROUTER } from "@/constants/router";
 import { DefaultField } from "@/model/product";
 import { useNavigate, useParams } from "react-router";
 import { ImageProductModel } from "@/model/imageProduct";
-import { ActionIcon, Group, Image, Tabs } from "@mantine/core";
+import { ActionIcon, Group, Image, Tabs, Text } from "@mantine/core";
 import { useGetImagesByProductIdQuery } from "@/redux/api/file.api";
 import { TypeInWarehouseRes } from "@/dto/response/typeInWarehouse.response";
 import { useGetDetailProductQuery, useGetTypeInWarehouseQuery } from "@/redux/api/product.api";
@@ -131,6 +131,7 @@ const DetailProduct: React.FC = () => {
                 >
                     <Image src={IconBack} />
                 </ActionIcon>
+                <Text style={{ fontSize: 22, fontWeight: 600 }}>Chỉnh sửa sản phẩm</Text>
             </Group>
             <Tabs defaultValue="edit">
                 <DetailProductTablist />

@@ -31,7 +31,12 @@ const AppRouter: React.FC = () => {
                         <Route path={ROUTER.DASHBOARD.href} element={<PageDashboard />} />
                         <Route path={ROUTER.PRODUCT.href} element={<PageProduct />} />
                         <Route path={ROUTER.TYPE_PRODUCT.href} element={<PageTypeProduct />} />
-                        <Route path={ROUTER.ORDER.href} element={<PageOrder />} />
+
+                        <Route path={ROUTER.ORDER_PENDING.href} element={<PageOrder />} />
+                        <Route path={ROUTER.ORDER_HISTORY.href} element={<PageOrder />} />
+                        <Route path={ROUTER.ORDER_DESTROY.href} element={<PageOrder />} />
+                        <Route path={ROUTER.ACCEPT_PAYMENT.href} element={<PageOrder />} />
+                        
                         <Route path={ROUTER.WARE_HOUSE.href} element={<PageWarehouse />} />
 
                         <Route path={ROUTER.CREATE_PRODUCT.href} element={<PageCreateProduct />} />
