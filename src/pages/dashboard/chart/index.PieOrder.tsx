@@ -22,6 +22,22 @@ export const DashboardPieOrder: React.FC = () => {
         ]
     }, [orders]);
 
+    const type_2 = useMemo(() => {
+        return [
+            orders.filter(item => item.groupOrder.typePay === "online").length,
+            orders.filter(item => item.groupOrder.typePay === "offline").length,
+        ]
+    }, [orders]);
+
+    const type_3 = useMemo(() => {
+        return [
+            orders.filter(item => item.status === "accept" && item.paid).length,
+            orders.filter(item => item.status === "accept" && !item.paid).length,
+        ]
+    }, [orders]);
+
+    
+
     return (
         <Grid gutter={40} mt={20}>
             <Grid.Col span={4}>
@@ -82,7 +98,7 @@ export const DashboardPieOrder: React.FC = () => {
                             ],
                             datasets: [{
                                 label: 'Đơn hàng',
-                                data: [300, 50],
+                                data: type_2,
                                 backgroundColor: [
                                     'rgb(64, 192, 87)',
                                     'rgb(255, 205, 86)',
@@ -115,7 +131,7 @@ export const DashboardPieOrder: React.FC = () => {
                             ],
                             datasets: [{
                                 label: 'Đơn hàng',
-                                data: [300, 50],
+                                data: type_3,
                                 backgroundColor: [
                                     'rgb(255, 99, 132)',
                                     'rgb(54, 162, 235)',

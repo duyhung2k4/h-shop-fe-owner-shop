@@ -1,6 +1,13 @@
 .root {
   background-color: #1A1D1F;
-  padding: 0px;
-  justify-content: start;
+  padding: 0px 20px 0px 0px;
   height: 100%;
+}
+
+.menu_item {
+    background-color: #000;
+}
+
+.menu_item:hover {
+    background-color: rgb(188, 188, 188) !important;
 }

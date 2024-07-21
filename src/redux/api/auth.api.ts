@@ -31,6 +31,12 @@ export const authApi = createApi({
                 ...endPoint.auth.refreshToken(),
                 data: payload,
             }),
+        }),
+        updateProfile: builder.mutation<QueryReturnType<ProfileModel>, ProfileModel>({
+            query: (payload) => ({
+                ...endPoint.auth.updateProfile(),
+                data: payload,
+            }),
         })
     })
 });
@@ -39,4 +45,5 @@ export const {
     useGetProfileQuery,
     useLoginGoogleMutation,
     useRefreshTokenMutation,
+    useUpdateProfileMutation,
 } = authApi;
