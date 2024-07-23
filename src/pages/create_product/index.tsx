@@ -38,6 +38,7 @@ const CreateProduct: React.FC = () => {
             price: 0,
             fields: [],
             files: [],
+            count: 0,
         }
     });
 
@@ -300,6 +301,7 @@ type FormCreateProduct = {
     fields: Field[]
     avatar?: FileWithPath
     files: FileWithPath[]
+    count: number
 }
 
 type Field = {

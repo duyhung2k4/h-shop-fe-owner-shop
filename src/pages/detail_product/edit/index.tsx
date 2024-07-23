@@ -47,7 +47,7 @@ const DetailProductUpdate: React.FC = () => {
             categoryId: `${defaultField["categoryId"]}`,
             price: defaultField["price"],
             files: [],
-            count: defaultField["count"],
+            count: defaultField["count"] || 0,
             fields: Object.keys(moreField).map((key) => ({ name: key, value: moreField[key] })),
         },
     });
